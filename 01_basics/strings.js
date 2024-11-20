@@ -30,5 +30,5 @@ console.log(url.replace('%20','_'));
 
 console.log(url.includes('https'));
 
-console.log(gamename.split('-'));
+console.log(gamename.split(''));
 
