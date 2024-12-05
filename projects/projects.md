@@ -40,3 +40,98 @@ setInterval(function () {
   clock.innerHTML = d.toLocaleTimeString();
 }, 1000);
 
+
+project 4
+
+const randomnumber = parseInt(Math.random() * 100 + 1);
+const submit = document.querySelector('#subt');
+const userinput = document.querySelector('#guessField');
+const guessSlot = document.querySelector('.guesses');
+const remaining = document.querySelector('.lastResult');
+const loworHi = document.querySelector('.lowOrHi');
+const startover = document.querySelector('.resultParas');
+
+console.log(submit);
+console.log(userinput);
+
+const p = document.createElement('p');
+let prevGuess = [];
+let numGuess = 1;
+
+let playGame = true;
+if (playGame) {
+  submit.addEventListener('click', function (e) {
+    e.preventDefault();
+    const guess = parseInt(userinput.value);
+    console.log(guess);
+    validateGuess(guess);
+  });
+}
+function validateGuess(guess) {
+  if (isNaN(guess)) {
+    alert('sahi number dalo bhai');
+  } else if (guess < 1) {
+    alert('number 1 se upder dalo bhai');
+  } else if (guess > 100) {
+    alert(' number 100 k niche dalo dalo bhai');
+  } else {
+    prevGuess.push(guess);
+    if (numGuess === 11) {
+      displayGuess(guess);
+      displayMessage(`game over . Number to guess was ${randomnumber}`);
+      endGame();
+    } else {
+      displayGuess(guess);
+      checkGuess(guess);
+    }
+  }
+}
+function checkGuess(guess) {
+  if (guess == randomnumber) {
+    displayMessage('YOu gusses it right');
+    endGame();
+  } else if (guess < randomnumber) {
+    displayMessage('number is too low');
+  } else if (guess > randomnumber) {
+    displayMessage('number it two high');
+  }
+}
+function displayGuess(guess) {
+  userinput.value = '';
+  guessSlot.innerHTML += `${guess}, `;
+  numGuess++;
+  remaining.innerHTML = `${10 - numGuess}`;
+}
+function displayMessage(message) {
+  loworHi.innerHTML = `<h3>${message}</h3>`;
+}
+function endGame() {
+  userinput.value = '';
+  userinput.setAttribute('disabled', '');
+
+  // Correctly create the button
+  p.classList.add('button');
+  p.innerHTML = `<button id="newGame">Start New Game</button>`;
+  startover.appendChild(p);
+
+  playGame = false;
+  newGame();
+}
+
+function newGame() {
+  const newGameButton = document.querySelector('#newGame');
+  if (newGameButton) {
+    newGameButton.addEventListener('click', function () {
+      randomnumber = parseInt(Math.random() * 100 + 1);
+      prevGuess = [];
+      numGuess = 1;
+      guessSlot.innerHTML = '';
+      remaining.innerHTML = `${11 - numGuess} `;
+      userinput.removeAttribute('disabled');
+      startover.removeChild(p);
+
+      playGame = true;
+    });
+  }
+}
+
